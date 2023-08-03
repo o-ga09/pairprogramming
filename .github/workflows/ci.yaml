@@ -17,12 +17,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd frontend 
           npm install
       
       - name: Static check
         run: |
-          cd frontend
           npm run lint
           npm run lintfix
           npm run format
@@ -32,5 +30,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          working-directory: "./frontend"
+          working-directory: "./"
           test-command: "npm run test:coverage"
