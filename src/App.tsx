@@ -1,29 +1,38 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { ChangeEvent, useState } from 'react';
+import Todo from './lib/components/Todo';
 
 function App() {
-  const [count, setCount] = useState(0);
+  type Todo = {
+    id: number;
+    name: string;
+    isFinished: boolean;
+  };
+
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  let newTodos = [] as Todo[];
+
+  const handleClick = () => {
+    setTodos(newTodos);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const title = e.target.value;
+    // console.log(title);
+    newTodos = [...todos, { id: 1, name: title, isFinished: false }];
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>
+            <Todo title={todo.name} isFinished={todo.isFinished} />
+          </li>
+        ))}
+      </ul>
+      <input type="text" onChange={(e) => handleChange(e)} />
+      <button onClick={handleClick}>add Todo</button>
     </>
   );
 }
