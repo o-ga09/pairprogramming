@@ -1,26 +1,23 @@
-import { ChangeEvent, useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import Todo from './lib/components/Todo';
+import { Input, Text } from '@chakra-ui/react';
+
+type Todo = {
+  id: number;
+  name: string;
+  isFinished: boolean;
+};
 
 function App() {
-  type Todo = {
-    id: number;
-    name: string;
-    isFinished: boolean;
-  };
-
+  const [value, setValue] = useState('');
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  let newTodos = [] as Todo[];
-
   const handleClick = () => {
-    setTodos(newTodos);
+    setTodos([...todos, { id: 1, name: value, isFinished: false }]);
+    setValue('');
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value;
-    // console.log(title);
-    newTodos = [...todos, { id: 1, name: title, isFinished: false }];
-  };
+  const handleChange = (event: { target: { value: SetStateAction<string> } }) => setValue(event.target.value);
 
   return (
     <>
@@ -31,7 +28,8 @@ function App() {
           </li>
         ))}
       </ul>
-      <input type="text" onChange={(e) => handleChange(e)} />
+      <Text mb="8px">Value: {value}</Text>
+      <Input value={value} onChange={handleChange} placeholder="Here is a sample placeholder" size="sm" />
       <button onClick={handleClick}>add Todo</button>
     </>
   );
